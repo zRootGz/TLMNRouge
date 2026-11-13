@@ -218,8 +218,10 @@ describe('GameRoom State Machine Tests', () => {
     room.setReady('p2', true);
 
     if (room.status === RoomStatus.BUFF_DRAFT) {
-      room.selectBuff('p1', room.draftOptions.get('p1')![0].id);
-      room.selectBuff('p2', room.draftOptions.get('p2')![0].id);
+      const b1 = room.draftOptions.get('p1')!.find((b) => b.id !== 'BUFF_FIRST_STRIKE') || room.draftOptions.get('p1')![0];
+      const b2 = room.draftOptions.get('p2')!.find((b) => b.id !== 'BUFF_FIRST_STRIKE') || room.draftOptions.get('p2')![0];
+      room.selectBuff('p1', b1.id);
+      room.selectBuff('p2', b2.id);
     }
 
     assert.equal(room.status, RoomStatus.PLAYING);
@@ -255,8 +257,10 @@ describe('GameRoom State Machine Tests', () => {
     room.setReady('p2', true);
 
     if (room.status === RoomStatus.BUFF_DRAFT) {
-      room.selectBuff('p1', room.draftOptions.get('p1')![0].id);
-      room.selectBuff('p2', room.draftOptions.get('p2')![0].id);
+      const b1 = room.draftOptions.get('p1')!.find((b) => b.id !== 'BUFF_FIRST_STRIKE') || room.draftOptions.get('p1')![0];
+      const b2 = room.draftOptions.get('p2')!.find((b) => b.id !== 'BUFF_FIRST_STRIKE') || room.draftOptions.get('p2')![0];
+      room.selectBuff('p1', b1.id);
+      room.selectBuff('p2', b2.id);
     }
 
     // Giả lập p2 thắng ván 1

@@ -10,7 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const CLIENT_DIR = path.join(__dirname, '..', 'client');
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+const rawPort = process.env.SERVER_PORT || process.env.PORT;
+const PORT = rawPort ? parseInt(rawPort, 10) : 8080;
 
 // 1. HTTP Server phục vụ static files cho Client UI
 const server = http.createServer((req, res) => {
@@ -566,9 +567,9 @@ function broadcastState(room: GameRoom, extraEvent?: any) {
   }
 }
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`====================================================`);
-  console.log(`🚀 TLMN Buff Game Server running at: http://localhost:${PORT}`);
+  console.log(`🚀 TLMN Buff Game Server running on 0.0.0.0:${PORT}`);
   console.log(`🎴 WebSocket Gateway active on the same port`);
   console.log(`====================================================`);
 });

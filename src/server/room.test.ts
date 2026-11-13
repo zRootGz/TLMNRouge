@@ -262,6 +262,7 @@ describe('GameRoom State Machine Tests', () => {
     // Giả lập p2 thắng ván 1
     const p2 = room.players[1];
     p2.handCards = [{ id: 999, rank: 3 as any, suit: 0 as any, code: '3S' }];
+    room.firstTurnRequiredCardId = null;
     room.currentTurnSeatIndex = 1;
     const winRes = room.playHand('p2', [999]);
     assert.equal(winRes.isMatchOver, true);

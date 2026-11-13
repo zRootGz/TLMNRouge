@@ -1,0 +1,29 @@
+{
+  "name": "tlmn-activity",
+  "version": "0.1.0",
+  "description": "Tiến Lên Miền Nam Activity with Buff Roguelike Mechanics",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types src/index.ts",
+    "test": "node --test --experimental-strip-types src/core/evaluator.test.ts src/core/suggester.test.ts src/buffs/buff-manager.test.ts src/server/room.test.ts src/core/bot.test.ts",
+    "test:all": "node --test --experimental-strip-types src/**/*.test.ts",
+    "build": "tsc"
+  },
+  "keywords": [
+    "game",
+    "tlmn",
+    "tien-len-mien-nam",
+    "card-game",
+    "buff"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@types/ws": "^8.18.2",
+    "ws": "^8.22.1"
+  }
+}

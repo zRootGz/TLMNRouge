@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Logs & task outputs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Scratch & temporary test scripts
+scratch/
+
+# Build artifacts
+dist/
+
+# Binaries
+cloudflared.exe
+*.exe
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

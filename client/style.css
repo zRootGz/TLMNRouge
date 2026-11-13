@@ -1,0 +1,1318 @@
+/* ====================================================================
+   BALATRO PSYCHEDELIC RETRO CRT PUNK THEME
+   Inspired by LocalThunk's "Balatro" Roguelike Poker
+   ==================================================================== */
+
+:root {
+  /* Balatro Color Palette */
+  --balatro-bg-dark: #0d0221;
+  --balatro-purple: #3d0066;
+  --balatro-magenta: #c2185b;
+  --balatro-midnight: #0b132b;
+  --balatro-red: #fe5f55;
+  --balatro-blue: #00a6fb;
+  --balatro-cyan: #00f0ff;
+  --balatro-gold: #ffd166;
+  --balatro-orange: #f77f00;
+  --balatro-green: #06d6a0;
+  --balatro-pink: #ff007f;
+  --pixel-border-color: #050505;
+
+  /* Balatro Thẻ Bài */
+  --card-width: 76px;
+  --card-height: 112px;
+  --card-bg: #f8f9fa;
+  --card-suit-red: #ea2b2b;
+  --card-suit-black: #1a1a24;
+  --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.55), 3px 3px 0 #000;
+  --card-lift-shadow: 0 16px 30px rgba(0, 0, 0, 0.7), 0 0 16px var(--balatro-cyan);
+
+  /* Balatro Buff/Joker Rarity */
+  --rarity-common: #b0bec5;
+  --rarity-rare: #00a6fb;
+  --rarity-epic: #ff007f;
+  --rarity-legendary: #ffd166;
+
+  /* Vietnamese Retro Arcade Font Stack */
+  --font-arcade: 'Chakra Petch', 'Montserrat', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: var(--balatro-bg-dark);
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 1. Psychedelic Fluid Plasma Canvas Background */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  image-rendering: pixelated;
+  opacity: 0.9;
+}
+
+/* 2. CRT Monitor Container & Bezel */
+.crt-monitor {
+  width: 100vw;
+  height: 100vh;
+  max-width: 1240px;
+  max-height: 840px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+  background: rgba(14, 8, 28, 0.88);
+  border: 12px solid #140d24;
+  outline: 4px solid #2b1b4a;
+  outline-offset: -8px;
+  border-radius: 28px;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.95),
+    inset 0 0 80px rgba(0, 0, 0, 0.85),
+    0 0 25px rgba(123, 44, 191, 0.35);
+  overflow: hidden;
+}
+
+/* CRT Post-Processing Layer (Clean Vignette - No Blurry Lines) */
+.crt-screen-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 75%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 900;
+  border-radius: 20px;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+
+/* Crisp Neon Text Glow */
+.crt-glow-text {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(255, 0, 127, 0.4);
+}
+
+/* Balatro Pixel Box Border */
+.pixel-box {
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0 #000;
+  border-radius: 8px;
+}
+
+/* ====================================================================
+   HEADER & ARCADE HUD
+   ==================================================================== */
+.game-header {
+  height: 54px;
+  padding: 0 18px;
+  background: rgba(10, 5, 20, 0.94);
+  border-bottom: 3px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  z-index: 50;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 18px;
+}
+
+.logo-text {
+  font-family: var(--font-arcade);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--balatro-gold);
+  letter-spacing: 1px;
+}
+
+.room-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.badge-pixel {
+  background: #2b1b4a;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: var(--balatro-cyan);
+  font-family: var(--font-arcade);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-arcade);
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--balatro-green);
+  box-shadow: 0 0 6px var(--balatro-green);
+  animation: pulse-dot 1.2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.8; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-icon {
+  background: #37235a;
+  color: var(--balatro-gold);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: transform 0.08s ease;
+}
+
+.btn-icon:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1c0e33;
+  padding: 4px 10px;
+  font-size: 9px;
+}
+
+.user-avatar-mini {
+  font-size: 14px;
+}
+
+#player-name-display {
+  font-weight: 800;
+  color: #fff;
+}
+
+.user-chips-mini {
+  color: var(--balatro-gold);
+  background: #000;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-weight: 900;
+}
+
+/* ====================================================================
+   TABLE ARENA & BALATRO BLIND WATERMARK
+   ==================================================================== */
+.game-table {
+  flex: 1;
+  position: relative;
+  display: grid;
+  grid-template-rows: 95px 1fr 195px;
+  grid-template-columns: 155px 1fr 155px;
+  padding: 10px 14px;
+}
+
+.felt-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.08;
+  z-index: 1;
+}
+
+.watermark-emblem {
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--balatro-cyan);
+}
+
+.watermark-title {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--balatro-pink);
+  margin-top: 4px;
+}
+
+/* ====================================================================
+   AVATAR PODS & RADIAL TIMER
+   ==================================================================== */
+.player-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 20;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVG Radial Timer */
+.radial-timer-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.radial-timer-svg .timer-track {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 6;
+}
+
+.radial-timer-svg .timer-bar {
+  fill: none;
+  stroke: var(--balatro-cyan);
+  stroke-width: 6;
+  stroke-linecap: square;
+  stroke-dasharray: 276;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.15s linear, stroke 0.25s ease;
+  filter: drop-shadow(0 0 5px var(--balatro-cyan));
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  background: #24143d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  z-index: 2;
+  transition: transform 0.2s ease;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.user-avatar-mini img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  vertical-align: middle;
+  object-fit: cover;
+}
+
+.player-slot.active-turn .avatar {
+  background: #3d0066;
+  box-shadow: 0 0 16px var(--balatro-cyan), 3px 3px 0 #000;
+  transform: scale(1.06);
+}
+
+.status-bubble {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--balatro-pink);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  z-index: 30;
+  animation: bubble-pop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.status-bubble.hidden {
+  display: none;
+}
+
+@keyframes bubble-pop {
+  0% { transform: translateX(-50%) scale(0.6); opacity: 0; }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+.player-info-pod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: #170b2c;
+  padding: 6px 10px;
+  min-width: 110px;
+}
+
+.player-info-pod .name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  max-width: 115px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pod-details {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chips-badge {
+  font-family: var(--font-arcade);
+  font-size: 12px;
+  color: var(--balatro-gold);
+  font-weight: 700;
+}
+
+.player-slot .card-count {
+  font-family: var(--font-arcade);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--balatro-cyan);
+}
+
+.slot-top { grid-column: 2; grid-row: 1; }
+.slot-left { grid-column: 1; grid-row: 2; }
+.slot-right { grid-column: 3; grid-row: 2; }
+
+/* ====================================================================
+   BOTTOM SLOT & BALATRO HUD
+   ==================================================================== */
+.slot-bottom {
+  grid-column: 1 / span 3;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  z-index: 30;
+}
+
+.bottom-player-hud {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: -2px;
+}
+
+.my-avatar-wrapper {
+  width: 46px;
+  height: 46px;
+}
+
+.my-avatar-wrapper .radial-timer-svg {
+  width: 46px;
+  height: 46px;
+}
+
+.my-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+}
+
+/* ====================================================================
+   TABLE CENTER: POT & CASUAL CARD TOSS
+   ==================================================================== */
+.table-center {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+}
+
+.center-pot {
+  background: rgba(18, 9, 36, 0.88);
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000, inset 0 0 25px rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 360px;
+  min-height: 145px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pot-header {
+  margin-bottom: 6px;
+}
+
+.pot-title {
+  font-family: var(--font-arcade);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--balatro-gold);
+}
+
+.played-cards-container {
+  display: flex;
+  gap: 8px;
+  min-height: 112px;
+  align-items: center;
+  justify-content: center;
+  perspective: 600px;
+}
+
+.empty-table-text {
+  font-family: var(--font-arcade);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.5px;
+}
+
+/* ====================================================================
+   LIVE COMBO VALIDATION BADGE (BALATRO RETRO POP)
+   ==================================================================== */
+.combo-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  margin-bottom: 4px;
+}
+
+.combo-preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px;
+  border-radius: 6px;
+  font-family: var(--font-arcade);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: 2px solid #000;
+  box-shadow: 0 3px 0 #000;
+  transition: all 0.15s ease-out;
+  animation: badge-appear 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badge-appear {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.combo-preview-badge.hint {
+  background: linear-gradient(90deg, #1b4332, #0d2b1f);
+  color: #ffd166;
+  border-color: #06d6a0;
+  box-shadow: 0 3px 0 #000, 0 0 12px rgba(6, 214, 160, 0.6);
+}
+
+.combo-preview-badge.valid {
+  background: #06d6a0;
+  color: #003322;
+  border-color: #000;
+  box-shadow: 0 3px 0 #000, 0 0 12px rgba(6, 214, 160, 0.6);
+}
+
+.combo-preview-badge.beat {
+  background: #118ab2;
+  color: #ffffff;
+  border-color: #000;
+  box-shadow: 0 3px 0 #000, 0 0 14px rgba(17, 138, 178, 0.7);
+}
+
+.combo-preview-badge.chop {
+  background: #ffd166;
+  color: #332000;
+  border-color: #000;
+  box-shadow: 0 3px 0 #000, 0 0 18px rgba(255, 209, 102, 0.9);
+  animation: chop-badge-pulse 0.6s infinite alternate;
+}
+
+@keyframes chop-badge-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); filter: brightness(1.2); }
+}
+
+.combo-preview-badge.cannot-beat {
+  background: #ef476f;
+  color: #fff;
+  border-color: #000;
+  box-shadow: 0 3px 0 #000, 0 0 10px rgba(239, 71, 111, 0.6);
+}
+
+.combo-preview-badge.invalid {
+  background: #f77f00;
+  color: #fff;
+  border-color: #000;
+  box-shadow: 0 3px 0 #000;
+}
+
+/* ====================================================================
+   BALATRO JUICY CARDS (IDLE BOBBING & 3D TILT)
+   ==================================================================== */
+.hand-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  perspective: 900px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  background: var(--card-bg);
+  border: 3px solid #000;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 8px;
+  margin-left: -22px;
+  cursor: grab;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transform-origin: bottom center;
+}
+
+.card:first-child {
+  margin-left: 0;
+}
+
+/* Thẻ bài trên tay: Đứng yên, rõ ràng, giữ nguyên thứ tự xếp chồng tự nhiên để không che lá bên cạnh */
+.hand-container .card {
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+/* Hover: Chỉ nhích nhẹ thẳng lên trên, không phóng to và không đè z-index lên lá bên cạnh */
+.card:hover:not(.selected):not(.dragging-reorder) {
+  transform: translateY(-6px);
+  border-color: var(--balatro-cyan);
+}
+
+/* Selected: Chỉ đẩy thẳng lên trên, giữ nguyên z-index tự nhiên để không che lá bài kế bên */
+.card.selected {
+  transform: translateY(-20px) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.65), 0 0 14px var(--balatro-pink) !important;
+  border: 3px solid var(--balatro-pink) !important;
+}
+
+/* Gợi ý bài: Nằm nguyên tại chỗ (không bay lên), chỉ phát sáng và chớp nháy viền + mặt bài */
+.card.suggested-hint:not(.selected) {
+  border: 3px solid #ffd166 !important;
+  animation: card-hint-pulse 0.85s ease-in-out infinite alternate;
+}
+
+/* Lá bài bắt buộc phải đánh ở lượt đầu ván 1 (Lá nhỏ nhất toàn bàn) */
+.card.required-first-card:not(.selected) {
+  border: 3px solid #ff0055 !important;
+  animation: required-card-pulse 0.75s ease-in-out infinite alternate !important;
+}
+
+@keyframes required-card-pulse {
+  0% {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 8px #ff0055;
+    border-color: #ff0055;
+  }
+  100% {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), 0 0 20px #ff0055, 0 0 16px #ffd166;
+    border-color: #ffd166;
+  }
+}
+
+@keyframes card-hint-pulse {
+  0% {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55), 0 0 8px rgba(255, 209, 102, 0.6);
+    border-color: #ffd166;
+    background-color: #f8f9fa;
+  }
+  100% {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65), 0 0 22px #06d6a0, 0 0 14px #ffd166, inset 0 0 14px rgba(255, 209, 102, 0.45);
+    border-color: #06d6a0;
+    background-color: #fffbeb;
+  }
+}
+
+/* Lá bài đang được kéo thả để sắp xếp vị trí */
+.card.dragging-reorder {
+  cursor: grabbing !important;
+  opacity: 0.92;
+  z-index: 60 !important;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.8), 0 0 18px var(--balatro-cyan) !important;
+  border-color: var(--balatro-cyan) !important;
+  transition: none !important;
+}
+
+/* Card Face Colors */
+.card.red {
+  color: var(--card-suit-red);
+}
+
+.card.black {
+  color: var(--card-suit-black);
+}
+
+.card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-arcade);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.card-center {
+  align-self: center;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.card-bottom {
+  align-self: flex-end;
+  font-family: var(--font-arcade);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  transform: rotate(180deg);
+}
+
+/* Thẻ ném giữa bàn: Xoay góc ngẫu nhiên */
+.card-tossed {
+  box-shadow: 4px 4px 0 #000;
+  pointer-events: none;
+  animation: balatro-toss 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes balatro-toss {
+  0% { transform: translateY(-35px) scale(1.2); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* ====================================================================
+   BALATRO CHUNKY PIXEL BUTTONS
+   ==================================================================== */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.btn-pixel {
+  padding: 10px 20px;
+  font-family: var(--font-arcade);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  color: #fff;
+  border: 3px solid #000;
+  box-shadow: 0 5px 0 #000;
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+  position: relative;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.btn-pixel:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.btn-pixel:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #000;
+}
+
+.btn-pixel:disabled {
+  opacity: 0.3;
+  filter: grayscale(90%);
+  cursor: not-allowed;
+  box-shadow: 0 2px 0 #000 !important;
+  transform: none !important;
+}
+
+.btn-pass-highlight:not(:disabled) {
+  animation: pass-btn-pulse 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes pass-btn-pulse {
+  0% { box-shadow: 0 5px 0 #000, 0 0 8px var(--balatro-red); }
+  100% { box-shadow: 0 5px 0 #000, 0 0 20px #ffd166; border-color: #ffd166; }
+}
+
+/* Nút Đánh Bài khi đã chọn bài hợp lệ và có thể đè bàn */
+.btn-play-ready {
+  background: var(--balatro-gold) !important;
+  color: #1a0f00 !important;
+  border-color: #06d6a0 !important;
+  box-shadow: 0 5px 0 #000, 0 0 16px rgba(6, 214, 160, 0.75) !important;
+  animation: play-ready-pulse 0.85s ease-in-out infinite alternate !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+
+@keyframes play-ready-pulse {
+  0% { transform: scale(1); box-shadow: 0 5px 0 #000, 0 0 10px rgba(6, 214, 160, 0.5); }
+  100% { transform: scale(1.03); box-shadow: 0 5px 0 #000, 0 0 22px #06d6a0, 0 0 14px #ffd166; }
+}
+
+.btn-play-inactive {
+  opacity: 0.52;
+  filter: grayscale(35%);
+  cursor: pointer;
+}
+
+.btn-pass-inactive {
+  opacity: 0.52;
+  filter: grayscale(35%);
+  cursor: pointer;
+}
+
+.btn-yellow {
+  background: var(--balatro-gold);
+  color: #1a0f00;
+  text-shadow: none;
+}
+
+.btn-red {
+  background: var(--balatro-red);
+}
+
+.btn-cyan {
+  background: var(--balatro-cyan);
+  color: #002233;
+  text-shadow: none;
+}
+
+.btn-purple {
+  background: var(--balatro-purple);
+}
+
+.btn-blue {
+  background: #0077b6;
+  color: #fff;
+}
+
+.btn-pink {
+  background: var(--balatro-pink);
+  color: #fff;
+}
+
+.btn-dark {
+  background: #2b1b4a;
+}
+
+.btn-large {
+  padding: 14px 32px;
+  font-size: 15px;
+}
+
+/* ====================================================================
+   BALATRO JOKERS (BUFF TRAY)
+   ==================================================================== */
+.buff-tray {
+  display: flex;
+  gap: 8px;
+}
+
+.buff-chip {
+  background: linear-gradient(135deg, #1b0a33 0%, #30115e 100%);
+  border: 2px solid var(--rarity-common);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 #000;
+  padding: 6px 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  position: relative;
+  color: #fff;
+}
+
+.buff-chip:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.7);
+}
+
+.buff-chip.RARE {
+  border-color: var(--rarity-rare);
+  box-shadow: 0 0 10px rgba(0, 166, 251, 0.6), 2px 2px 0 #000;
+}
+
+.buff-chip.EPIC {
+  border-color: var(--rarity-epic);
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.7), 2px 2px 0 #000;
+}
+
+.buff-chip.LEGENDARY {
+  border-color: var(--rarity-legendary);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.8), 2px 2px 0 #000;
+}
+
+.buff-chip.active-buff {
+  border-style: dashed;
+  animation: active-buff-glow 2s infinite alternate;
+}
+
+@keyframes active-buff-glow {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(1.25); box-shadow: 0 0 14px var(--balatro-cyan), 2px 2px 0 #000; }
+}
+
+/* ====================================================================
+   MODALS: BALATRO BOOSTER PACK & VICTORY
+   ==================================================================== */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 2, 14, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.balatro-modal {
+  background: #170b2c;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  border-radius: 16px;
+  padding: 26px;
+  width: 90%;
+  max-width: 640px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-badge-crown, .victory-ribbon {
+  font-family: var(--font-arcade);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--balatro-gold);
+  background: #000;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.balatro-modal h2 {
+  font-family: var(--font-arcade);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.balatro-modal .subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  color: #b0bec5;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.buff-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.buff-card {
+  background: #24143d;
+  border: 3px solid var(--rarity-common);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 #000;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.buff-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  border-color: var(--balatro-cyan);
+  box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4), 3px 3px 0 #000;
+}
+
+.buff-card .buff-icon {
+  font-size: 32px;
+  animation: balatro-jiggle 1.5s infinite;
+}
+
+.buff-card .buff-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+}
+
+.buff-card .buff-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cfd8dc;
+  line-height: 1.4;
+}
+
+/* ====================================================================
+   SCOREBOARD & SCALE-SPRING NUMBER POP
+   ==================================================================== */
+.scoreboard {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #24143d;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0 #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.score-row.winner {
+  background: #3d0066;
+  border-color: var(--balatro-gold);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.4), 2px 2px 0 #000;
+}
+
+.score-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score-delta {
+  font-family: var(--font-arcade);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.score-delta.pos {
+  color: var(--balatro-green);
+}
+
+.score-delta.neg {
+  color: var(--balatro-red);
+}
+
+/* Scale-Spring Number Pop Animation */
+.score-pop {
+  animation: score-spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.4) forwards;
+}
+
+@keyframes score-spring-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.4) rotate(-3deg); color: var(--balatro-pink); text-shadow: 0 0 12px var(--balatro-pink); }
+  70% { transform: scale(0.9) rotate(2deg); color: var(--balatro-cyan); text-shadow: 0 0 12px var(--balatro-cyan); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Confetti */
+.confetti-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 120;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--balatro-cyan);
+  top: -20px;
+  opacity: 0.9;
+  animation: confetti-fall 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(850px) rotate(720deg); opacity: 0; }
+}
+
+/* Impact Banner */
+.impact-banner {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  background: var(--balatro-pink);
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000, 0 0 30px var(--balatro-pink);
+  padding: 14px 32px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.impact-banner.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.shake {
+  animation: screen-shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes screen-shake {
+  10%, 90% { transform: translate3d(-3px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  top: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #170b2c;
+  border: 2px solid var(--balatro-cyan);
+  box-shadow: 3px 3px 0 #000, 0 0 15px rgba(0, 240, 255, 0.4);
+  padding: 10px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 200;
+  transition: opacity 0.25s ease;
+}
+
+.toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ====================================================================
+   FLATICON STICKER SYSTEM & FLOATING REACTIONS
+   ==================================================================== */
+.sticker-drawer {
+  position: absolute;
+  bottom: 84px;
+  right: 20px;
+  width: 320px;
+  background: #110524;
+  border: 3px solid var(--balatro-pink);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 4px 4px 0 #000;
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 500;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+}
+
+.sticker-drawer.hidden {
+  transform: translateY(20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sticker-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2a164d;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.drawer-title {
+  font-family: var(--font-arcade);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--balatro-gold);
+}
+
+.btn-close-sm {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  font-weight: 900;
+}
+
+.btn-close-sm:hover {
+  color: #fff;
+}
+
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sticker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #1c0c38;
+  border: 2px solid #3d1a70;
+  border-radius: 6px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.sticker-item:hover {
+  transform: scale(1.08);
+  border-color: var(--balatro-cyan);
+  background: #2a1254;
+  box-shadow: 0 4px 12px rgba(0, 240, 255, 0.3);
+}
+
+.sticker-item svg {
+  width: 48px;
+  height: 48px;
+}
+
+.sticker-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-top: 4px;
+}
+
+/* Floating Sticker Bubble above Player Avatar */
+.sticker-reaction-container {
+  position: absolute;
+  top: -65px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.floating-sticker {
+  animation: sticker-pop-float 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.floating-sticker svg {
+  width: 68px;
+  height: 68px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+}
+
+@keyframes sticker-pop-float {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.3);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1.18);
+  }
+  30% {
+    transform: translateY(-4px) scale(1);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-38px) scale(0.7);
+  }
+}
